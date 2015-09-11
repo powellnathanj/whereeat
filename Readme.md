@@ -1,4 +1,4 @@
-*This is a docker container that will run a small sinatra app that will tell you where to have lunch.
+* This is a docker container that will run a small sinatra app that will tell you where to have lunch.
 
 * clone the repo
 
