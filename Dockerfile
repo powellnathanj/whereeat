@@ -3,9 +3,11 @@ FROM centos:7
 RUN yum update -y
 RUN yum install -y rubygems
 RUN gem install sinatra
+COPY app.rb /
 COPY whereeat.rb /
-COPY locations.csv /
+
+VOLUME ['/data']
 
 EXPOSE 8080
 
-CMD ["ruby", "/whereeat.rb"]
+CMD ["ruby", "/app.rb"]

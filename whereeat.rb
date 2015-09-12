@@ -9,7 +9,7 @@ class Whereeat
 
     def read_locations
         begin
-            f = File.read('locations.json')
+            f = File.read('data/locations.json')
             @locations = JSON.parse(f)
         rescue Errno::ENOENT
             @locations = ['Location file does not exist'] 
