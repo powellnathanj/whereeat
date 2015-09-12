@@ -1,17 +1,23 @@
 #!/usr/bin/env ruby
 
-require 'sinatra'
-require 'csv'
+require 'json'
 
-set :bind, '0.0.0.0'
-set :port, 8080
+class Whereeat
+    def initialize
+        @locations = Array.new
+    end
 
-begin
-    food = CSV.read("locations.csv")
-rescue Errno::ENOENT
-    food = ['Location file does not exist'] 
-end
+    def read_locations
+        begin
+            f = File.read('locations.json')
+            @locations = JSON.parse(f)
+        rescue Errno::ENOENT
+            @locations = ['Location file does not exist'] 
+        end
+    end
 
-get '/' do
-  food.sample()
+    def where_is_lunch
+        read_locations
+        return @locations.sample()
+    end
 end
