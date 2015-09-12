@@ -1,11 +1,16 @@
 #!/usr/bin/env ruby
 
 require 'sinatra'
+require 'csv'
 
 set :bind, '0.0.0.0'
 set :port, 8080
 
-food = ["Panera", "Isaac's", "Chipotle", "Red Robin", "Chocolate Ave Grille"]
+begin
+    food = CSV.read("locations.csv")
+rescue Errno::ENOENT
+    food = ['Location file does not exist'] 
+end
 
 get '/' do
   food.sample()
