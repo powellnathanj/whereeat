@@ -19,62 +19,56 @@ Resolving deltas: 100% (3/3), done.
 ### Fill it
 Then you need to populate the application with your favorite places to eat, then save it
 ```bash
-[ root@harbor [update-docs] whereeat ] $ vi whereeat.rb
-  1 #!/usr/bin/env ruby
-  2
-  3 require 'sinatra'
-  4
-  5 set :bind, '0.0.0.0'
-  6 set :port, 8080
-  7
-  8 food = ["Panera", "Isaac's", "Chipotle", "Red Robin", "Chocolate Ave Grille"]
-  9
- 10 get '/' do
- 11   food.sample()
- 12 end
+[ root@harbor  ~ ] $ cd whereeat
+[ root@harbor [master] whereeat ] $ vi data/locations.json
+[
+    "Panera",
+    "Isaac's",
+    "Chipotle",
+    "RedRobin",
+    "Chocolate Ave Grille",
+    "Phillip Arthurs"
+]
 ```
 
 ### Build it
 Almost there! We need to build the image first, then run it
 ```bash
-[ root@harbor [update-docs] whereeat ] $ docker build -t nathanpowell/whereeat:v1 .
-Sending build context to Docker daemon 52.74 kB
+[ root@harbor [master] whereeat ] $ docker build -t nathanpowell/whereeat .
+Sending build context to Docker daemon 91.65 kB
 Step 0 : FROM centos:7
-Status: Downloaded newer image for centos:7
  ---> 0f73ae75014f
 Step 1 : RUN yum update -y
- ---> Running in 2ff095da1e74
- < left out bunch of output >
- ---> c6ce59769fd5
-Removing intermediate container 2ff095da1e74
+ ---> Using cache
+ ---> efb1ad69f585
 Step 2 : RUN yum install -y rubygems
- ---> Running in abdf61db9851
- < left out bunch of output >
- ---> fb71e7016474
-Removing intermediate container abdf61db9851
+ ---> Using cache
+ ---> e3488afb14d8
 Step 3 : RUN gem install sinatra
- ---> Running in 78cd81610c37
- < left out bunch of output >
- ---> 42851c8eca5a
-Removing intermediate container 78cd81610c37
-Step 4 : COPY whereeat.rb /
- ---> 6cd0cddb8f8d
-Removing intermediate container 5f841c17ab7a
-Step 5 : EXPOSE 8080
- ---> Running in 65a314a5f133
- ---> 01f7b53d8d7f
-Removing intermediate container 65a314a5f133
-Step 6 : CMD ruby /whereeat.rb
- ---> Running in e1e67f103a67
- ---> 78c34a8b5dc9
-Removing intermediate container e1e67f103a67
-Successfully built 78c34a8b5dc9
+ ---> Using cache
+ ---> 90c7127ee882
+Step 4 : COPY app.rb /
+ ---> Using cache
+ ---> af80a4b60f2d
+Step 5 : COPY whereeat.rb /
+ ---> Using cache
+ ---> b30284292b72
+Step 6 : VOLUME ['/data']
+ ---> Using cache
+ ---> c3d11fac3142
+Step 7 : EXPOSE 8080
+ ---> Using cache
+ ---> 7dd84b0cb4a7
+Step 8 : CMD ruby /app.rb
+ ---> Using cache
+ ---> 15c3c61784c0
+Successfully built 15c3c61784c0
 ```
 
 ### Run it
 And now we are ready! We can finally run our application, and find out where we're eating lunch, I'm getting hungry.
 ```bash
-[ root@harbor [update-docs] whereeat ] $ docker run -d -p 8080:8080 nathanpowell/whereeat:v1
+[ root@harbor [update-docs] whereeat ] $ docker run -d -p 8080:8080 -v $(pwd)/data:/data nathanpowell/whereeat
 7b53110fa0509b65b4f0e6ce6c63eedaaafc23cc6b48232b5db9d76b2ab2152c
 ```
 
