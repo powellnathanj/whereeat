@@ -1,6 +1,9 @@
 # Whereeat: what's for lunch?
 Do you have trouble deciding where to eat lunch everyday? Wouldn't it be nice if someone or something could just decide for you? Well, now there is! Whereeat is an Sinatra application that allows you to input all your favorite places to eat then allows you to request for a location. It takes the stress out of deciding where to eat, and lets you focus on the eating part.
 
+## Code Status
+[![Code Climate](https://codeclimate.com/github/slaney/whereeat/badges/gpa.svg)](https://codeclimate.com/github/slaney/whereeat)
+
 ## Getting Started
 Whereeat is a Sinatra application, we provide you with a Dockerfile to build an image, so that you can get up and running quickly. You may also set up your own application server (eq. apache passenger), and run Whereeat where it makes sense for you
 
