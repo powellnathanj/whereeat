@@ -1,13 +1,15 @@
-FROM centos:7
+FROM ruby:2.3.1
 
-RUN yum update -y
-RUN yum install -y rubygems
-RUN gem install sinatra
-COPY app.rb /
-COPY whereeat.rb /
+RUN apt-get -y update && apt-get install -y nginx supervisor
 
-VOLUME ['/data']
+ADD etc/ /etc
 
-EXPOSE 8080
+RUN mkdir -p /data/app
+ADD . /data/app
 
-CMD ["ruby", "/app.rb"]
+WORKDIR /data/app
+RUN bundle install
+
+CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+
+EXPOSE 80
